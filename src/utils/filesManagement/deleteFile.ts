@@ -1,24 +1,19 @@
-import { v4 as UUID } from 'uuid';
-import fs from 'fs';
 import cloudinary from '../../configs/cloudinaryConfig';
 
-export const deleteFile = async(
-    public_id: string
-)=> {
-
-    return cloudinary.uploader.destroy(public_id)
-        .then(result => {
-            return {
-                code: 200,
-                message: "SUppression effectué avec succès !",
-                // result,
-            };
-        })
-        .catch(error => {
-            return {
-                code: 500,
-                message: error,
-            };
-        });
-    
-}
+export const deleteFile = async (public_id: string) => {
+    try {
+      const result = await cloudinary.uploader.destroy(public_id);
+      return {
+        code: 200,
+        message: "Suppression effectuée avec succès !",
+      };
+    } catch (error) {
+        
+      console.error('Delete file error:', error);
+      return {
+        code: 500,
+        message: 'Failed to delete file.',
+      };
+    }
+};
+  
