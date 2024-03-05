@@ -6,12 +6,12 @@ import {
 } from 'express';
 import { v4 as UUID } from 'uuid';
 
-import { DB } from '../configs/dbConfigs/config';
+import { DB } from '@configs';
 import { 
     returnError,
     uploadFile,
     deleteFile,
-} from '../utils';
+} from '@utils';
 
 const router = Router();
 

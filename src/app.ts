@@ -9,7 +9,7 @@ import logger from 'morgan';
 import cors from 'cors';
 
 import swaggerUI from 'swagger-ui-express';
-import swaggerDocs from './configs/swaggerConfig';
+import { swaggerDocs } from '@configs';
 
 import exemplesRouter from './routes/exemples';
 import indexRouter from './routes/index';

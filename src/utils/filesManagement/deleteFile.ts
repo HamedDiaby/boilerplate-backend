@@ -1,4 +1,4 @@
-import cloudinary from '../../configs/cloudinaryConfig';
+import { cloudinary } from '@configs';
 
 export const deleteFile = async (public_id: string) => {
     try {

@@ -1,7 +1,7 @@
 import { v4 as UUID } from 'uuid';
 import fs from 'fs';
 import path from 'path';
-import cloudinary from '../../configs/cloudinaryConfig';
+import { cloudinary } from '@configs';
 
 export const uploadFile = async (myFile: any, dirName: string) => {
   try {
