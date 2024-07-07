@@ -13,7 +13,7 @@ function createTransporter() {
 export async function sendEmail(
   to: string, 
   subject: string,  
-  text: string, 
+  html: string, 
 ) {
   
   const transporter = createTransporter();
@@ -22,7 +22,7 @@ export async function sendEmail(
     from: process.env.NODE_MAILER_EMAIL, // L'expéditeur
     to: to, // Le destinataire
     subject: subject,
-    text: text,
+    html: html,
   };
 
   try {

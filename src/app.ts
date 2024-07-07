@@ -11,9 +11,7 @@ import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import { swaggerDocs } from '@configs';
 
-import exemplesRouter from './routes/exemples';
-import indexRouter from './routes/index';
-import usersRouter from './routes/users';
+import usersRouter from './routes/users/router';
 
 const app = express();
 
@@ -39,9 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/exemples', exemplesRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 export default app;

@@ -1,34 +1,26 @@
 import { v4 as UUID } from 'uuid';
-import fs from 'fs';
 import path from 'path';
-import { cloudinary } from '@configs';
 
-export const uploadFile = async (myFile: any, dirName: string) => {
+export const uploadFile = async (fileToUpload: any, fileDir: string) => {
   try {
-    const myFilePath = path.join('./tmp', `${UUID()}.jpg`);
-    
-    // Assurer la création du dossier tmp s'il n'existe pas
-    if (!fs.existsSync('./tmp')) {
-      fs.mkdirSync('./tmp');
-    }
+    const absoluteFileDir = `${process.env.SOME_PATH!}/${fileDir}/`;
+    const fileName = `origin_${UUID()}.jpg`;
+    const myFilePath = path.join(absoluteFileDir, fileName);
 
-    // Enregistrer le fichier temporairement
-    await fs.promises.writeFile(myFilePath, myFile.buffer);
-
-    const resultCloudinary = await cloudinary.uploader.upload(myFilePath, {
-      folder: `${dirName}/`,
+    fileToUpload.mv(myFilePath, (err: any) => {
+      if(err){
+        return {
+          code: 500,
+          error: 'Failed to upload file.',
+        };
+      }
     });
-
-    // Supprimer le fichier temporaire après l'upload
-    await fs.promises.unlink(myFilePath);
 
     return {
       code: 200,
-      result: {
-        uploadedFileUrl: resultCloudinary.url,
-        uploadedFile_public_id: resultCloudinary.public_id,
-      },
+      fileName,
     };
+
   } catch (error) {
     console.error('Upload file error:', error);
     
