@@ -11,6 +11,7 @@ import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import { swaggerDocs } from '@configs';
 
+import testRouter from './routes/test.route';
 import usersRouter from './routes/users/router';
 import { PathsEnum } from '@utils';
 
@@ -38,6 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use('/', testRouter);
 app.use(PathsEnum.USER_BASE_ROUTE, usersRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
