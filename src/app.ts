@@ -10,8 +10,7 @@ import session from 'express-session';
 import cors from 'cors';
 
 import swaggerUI from 'swagger-ui-express';
-import { swaggerDocs, sessionConfig } from '@configs';
-import passport from './configs/passportConfig';
+import { swaggerDocs, sessionConfig, passport } from '@configs';
 
 import testRouter from './routes/test.route';
 import usersRouter from './routes/users/router';
