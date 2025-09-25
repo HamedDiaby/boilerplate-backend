@@ -21,7 +21,7 @@ const app = express();
 
 const allowedOrigins = [
   // a mettre en commentaire pour la mise en prod (localhost)
-  'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 
+  'http://localhost:3000', 
   // ajouter ici les domaines de production
 ];
 
@@ -49,8 +49,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', testRouter);
+app.use(PathsEnum.ADMIN_BASE_ROUTE, adminSessionRouter);
 app.use(PathsEnum.USER_BASE_ROUTE, usersRouter);
-app.use('/admin/sessions', adminSessionRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 export default app;

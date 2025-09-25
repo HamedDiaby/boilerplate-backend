@@ -5,36 +5,9 @@ import {
     clearAllSessions,
     restartCleanupService
 } from './sessionController';
+import { PathsEnum } from '@utils';
 
 const router = Router();
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     SessionStats:
- *       type: object
- *       properties:
- *         totalSessions:
- *           type: number
- *           description: Nombre total de sessions
- *         activeSessions:
- *           type: number
- *           description: Nombre de sessions actives
- *         expiredSessions:
- *           type: number
- *           description: Nombre de sessions expirées
- *         cleanupService:
- *           type: object
- *           properties:
- *             isRunning:
- *               type: boolean
- *             intervalActive:
- *               type: boolean
- *         timestamp:
- *           type: string
- *           format: date-time
- */
 
 /**
  * @swagger
@@ -60,7 +33,7 @@ const router = Router();
  *       '500':
  *         description: Erreur serveur
  */
-router.get('/stats', getSessionStats);
+router.get(PathsEnum.ADMIN_SESSION_STATS, getSessionStats);
 
 /**
  * @swagger
@@ -98,7 +71,7 @@ router.get('/stats', getSessionStats);
  *       '500':
  *         description: Erreur lors du nettoyage
  */
-router.post('/cleanup', cleanupSessions);
+router.post(PathsEnum.ADMIN_SESSION_CLEANUP, cleanupSessions);
 
 /**
  * @swagger
@@ -130,7 +103,7 @@ router.post('/cleanup', cleanupSessions);
  *       '500':
  *         description: Erreur lors de la suppression
  */
-router.delete('/clear', clearAllSessions);
+router.delete(PathsEnum.ADMIN_SESSION_CLEAR, clearAllSessions);
 
 /**
  * @swagger
@@ -175,6 +148,34 @@ router.delete('/clear', clearAllSessions);
  *       '500':
  *         description: Erreur lors du redémarrage
  */
-router.put('/restart-cleanup', restartCleanupService);
+router.put(PathsEnum.ADMIN_SESSION_RESTART_CLEANUP, restartCleanupService);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SessionStats:
+ *       type: object
+ *       properties:
+ *         totalSessions:
+ *           type: number
+ *           description: Nombre total de sessions
+ *         activeSessions:
+ *           type: number
+ *           description: Nombre de sessions actives
+ *         expiredSessions:
+ *           type: number
+ *           description: Nombre de sessions expirées
+ *         cleanupService:
+ *           type: object
+ *           properties:
+ *             isRunning:
+ *               type: boolean
+ *             intervalActive:
+ *               type: boolean
+ *         timestamp:
+ *           type: string
+ *           format: date-time
+ */
 
 export default router;
