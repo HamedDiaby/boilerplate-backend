@@ -14,6 +14,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
+import { UpdatePasswordSchema } from '../models/validation.schemas';
 
 const { hashPassword } = encodedString();
 
@@ -23,11 +24,17 @@ export const updateUserPassword = async(
     next: NextFunction,
 )=> {
     try {
-      const { token, newPassword } : { token: string, newPassword: string } = req.body;
-  
-      if(!(token && newPassword)){
-        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
+      // Validation des données avec Zod
+      const validationResult = UpdatePasswordSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return returnErrorWithStatus(
+          res, 
+          'Données invalides: ' + validationResult.error.issues.map(i => i.message).join(', '), 
+          400
+        );
       }
+
+      const { token, newPassword } = validationResult.data;
   
       const userIdReq = await getUserID(token);
   

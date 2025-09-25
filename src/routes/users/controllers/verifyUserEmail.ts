@@ -13,6 +13,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
+import { VerifyEmailSchema } from '../models/validation.schemas';
 
 export const verifyUserEmail = async(
     req: Request, 
@@ -20,11 +21,17 @@ export const verifyUserEmail = async(
     next: NextFunction,
 )=> {
     try {
-      const { token, otp } : { token: string, otp: string } = req.body;
-  
-      if(!(token && otp)){
-        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
+      // Validation des données avec Zod
+      const validationResult = VerifyEmailSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return returnErrorWithStatus(
+          res, 
+          'Données invalides: ' + validationResult.error.issues.map(i => i.message).join(', '), 
+          400
+        );
       }
+
+      const { token, otp } = validationResult.data;
   
       const userIdReq = await getUserID(token);
   

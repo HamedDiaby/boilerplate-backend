@@ -12,6 +12,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
+import { DeleteUserAccountSchema } from '../models/validation.schemas';
 
 export const deleteUserAccount = async(
     req: Request, 
@@ -19,11 +20,17 @@ export const deleteUserAccount = async(
     next: NextFunction,
 )=> {
     try {
-      const { token } : { token : string } = req.body;
-  
-      if(!(token)){
-        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
+      // Validation des données avec Zod
+      const validationResult = DeleteUserAccountSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return returnErrorWithStatus(
+          res, 
+          'Données invalides: ' + validationResult.error.issues.map(i => i.message).join(', '), 
+          400
+        );
       }
+
+      const { token } = validationResult.data;
   
       const userIdReq = await getUserID(token);
   
