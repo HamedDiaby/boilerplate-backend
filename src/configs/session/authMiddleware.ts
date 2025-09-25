@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { DB, JWTService } from '@configs';
-import { CollectionEnum } from '@utils';
-import { SessionData, AuthUser } from '../types';
-import { returnErrorWithStatus } from './responseHelper';
+import { CollectionEnum, SessionData, AuthUser, returnErrorWithStatus } from '@utils';
+import { JWTService } from './jwtService';
+import { DB } from '../dbConfigs';
 
 /**
  * Middleware pour vérifier l'authentification JWT

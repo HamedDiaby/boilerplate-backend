@@ -1,4 +1,4 @@
-import { PathsEnum, authenticate } from '@utils';
+import { PathsEnum } from '@utils';
 import { Router } from 'express';
 
 import { createUser } from './createUser';
@@ -9,6 +9,7 @@ import { updateUserInfos } from './updateUserInfos';
 import { deleteUserAccount } from './deleteUserAccount';
 import { refreshToken } from './refreshToken';
 import { logoutUser } from './logoutUser';
+import { authenticate } from '@configs';
 
 const router = Router();
 
