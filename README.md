@@ -218,9 +218,10 @@ sequenceDiagram
 
 ### Stockage des Sessions
 
-- **Express Session** : En mémoire (développement)
-- **Firebase** : Stockage persistent des métadonnées de session
-- **Recommandation** : Utiliser Redis ou MongoDB pour la production
+- **Express Session** : Store Firebase personnalisé (production)
+- **Firebase** : Stockage persistant des métadonnées de session
+- **Nettoyage automatique** : Service de nettoyage des sessions expirées
+- **Monitoring** : Endpoints d'administration pour surveiller les sessions
 
 ### Middleware d'Authentification
 
@@ -540,6 +541,12 @@ const LoginSchema = z.object({
 - `DELETE /users/user-delete-account` - 🔒 Supprimer le compte
 - `PUT /users/user-verify-email` - Vérifier l'email
 
+#### Administration des Sessions
+- `GET /admin/sessions/stats` - 📊 Statistiques des sessions
+- `POST /admin/sessions/cleanup` - 🧹 Nettoyage manuel
+- `DELETE /admin/sessions/clear` - ⚠️ Supprimer toutes les sessions
+- `PUT /admin/sessions/restart-cleanup` - 🔄 Redémarrer le service
+
 🔒 = Authentification requise
 
 ## 🧪 Tests
@@ -567,13 +574,144 @@ npm run test:coverage
 
 1. Configurer les variables d'environnement de production
 2. Mettre à jour les origines CORS autorisées
-3. Configurer un store de session persistent (Redis/MongoDB)
+3. Le store de session Firebase est automatiquement configuré
 
 ### Build
 
 ```bash
 npm run build
 npm start
+```
+
+## 🔧 Nouvelles Fonctionnalités
+
+### 🗄️ Store de Session Firebase
+
+Le système utilise maintenant un **store de session persistant** avec Firebase :
+
+- **Stockage persistant** : Sessions sauvegardées dans Firestore
+- **Nettoyage automatique** : Service automatique de suppression des sessions expirées
+- **Monitoring avancé** : Endpoints d'administration pour surveiller les sessions
+- **Performance optimisée** : Gestion efficace des sessions avec mise à jour intelligente
+
+#### Configuration Automatique
+
+```typescript
+// Le store Firebase est automatiquement configuré
+const firebaseStore = new FirebaseSessionStore();
+
+// Nettoyage automatique toutes les 6h (production) / 1h (dev)
+const cleanupService = getSessionCleanupService(firebaseStore);
+cleanupService.start();
+```
+
+#### Endpoints d'Administration
+
+Nouveaux endpoints pour gérer les sessions :
+
+```bash
+# Statistiques des sessions
+GET /admin/sessions/stats
+
+# Nettoyage manuel
+POST /admin/sessions/cleanup
+
+# Supprimer toutes les sessions (ATTENTION!)
+DELETE /admin/sessions/clear
+
+# Redémarrer le service de nettoyage
+PUT /admin/sessions/restart-cleanup
+```
+
+### 📚 Documentation API Swagger Complète
+
+La documentation Swagger a été considérablement améliorée :
+
+- **Schémas détaillés** : Tous les modèles de données documentés
+- **Exemples complets** : Requêtes et réponses d'exemple
+- **Codes d'erreur** : Documentation exhaustive des erreurs possibles
+- **Sécurité** : Documentation des méthodes d'authentification
+- **Catégorisation** : Organisation par tags (Authentication, User Management, Admin)
+
+#### Accès à la Documentation
+
+```
+http://localhost:3000/api-docs
+```
+
+La documentation inclut :
+- 🔐 **Authentification** : Login, register, logout, refresh tokens
+- 👤 **Gestion Utilisateur** : CRUD complet du profil utilisateur  
+- 🛡️ **Administration** : Monitoring et gestion des sessions
+- 📝 **Validation** : Schémas Zod détaillés avec contraintes
+- 🚨 **Gestion d'Erreurs** : Codes de statut et messages d'erreur
+
+### 🔄 Gestion Optimisée des Sessions
+
+#### Fonctionnalités du Store Firebase
+
+```typescript
+class FirebaseSessionStore {
+  // Récupération avec vérification d'expiration
+  async get(sessionId, callback)
+  
+  // Sauvegarde avec timestamp
+  async set(sessionId, session, callback)
+  
+  // Suppression sécurisée
+  async destroy(sessionId, callback)
+  
+  // Nettoyage automatique des sessions expirées
+  async cleanupExpiredSessions()
+  
+  // Statistiques en temps réel
+  async length(callback)
+}
+```
+
+#### Service de Nettoyage Automatique
+
+```typescript
+class SessionCleanupService {
+  // Démarrage avec intervalle configurable
+  start(intervalHours = 6)
+  
+  // Statistiques détaillées
+  async getSessionStats()
+  
+  // Nettoyage manuel
+  async cleanup()
+  
+  // Status du service
+  getStatus()
+}
+```
+
+## 📊 Monitoring des Sessions
+
+### Métriques Disponibles
+
+- **Sessions totales** : Nombre de sessions en base
+- **Sessions actives** : Sessions non expirées
+- **Sessions expirées** : Sessions à nettoyer
+- **Service de nettoyage** : État du service automatique
+
+### Exemple de Réponse Statistiques
+
+```json
+{
+  "success": true,
+  "data": {
+    "totalSessions": 150,
+    "activeSessions": 120,
+    "expiredSessions": 30,
+    "cleanupService": {
+      "isRunning": true,
+      "intervalActive": true
+    },
+    "timestamp": "2025-09-25T10:30:00.000Z"
+  }
+}
 ```
 
 ## 🤝 Contribution

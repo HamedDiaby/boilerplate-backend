@@ -14,6 +14,7 @@ import { swaggerDocs, sessionConfig, passport } from '@configs';
 
 import testRouter from './routes/test.route';
 import usersRouter from './routes/users/router';
+import adminSessionRouter from './routes/admin/sessionRouter';
 import { PathsEnum } from '@utils';
 
 const app = express();
@@ -49,6 +50,7 @@ app.use(passport.session());
 
 app.use('/', testRouter);
 app.use(PathsEnum.USER_BASE_ROUTE, usersRouter);
+app.use('/admin/sessions', adminSessionRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 export default app;
