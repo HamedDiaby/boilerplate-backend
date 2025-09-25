@@ -5,7 +5,8 @@
     "test": "jest",
     "build": "webpack --mode production",
     "start": "node dist/app.js",
-    "dev": "webpack --mode development && nodemon --exec ts-node dist/app.js"
+    "dev": "nodemon",
+    "dev:webpack": "webpack --mode development --watch"
   },
   "keywords": [],
   "author": "Hamed Diaby Koumba",
@@ -58,6 +59,7 @@
     "ts-jest": "^29.1.2",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-node-externals": "^3.0.0"
