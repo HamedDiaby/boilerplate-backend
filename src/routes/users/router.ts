@@ -1,19 +1,19 @@
 import { PathsEnum } from '@utils';
 import { Router } from 'express';
-
-import { createUser } from './createUser';
-import { verifyUserEmail } from './verifyUserEmail';
-import { loginUser } from './loginUser';
-import { updateUserPassword } from './updateUserPassword';
-import { updateUserInfos } from './updateUserInfos';
-import { deleteUserAccount } from './deleteUserAccount';
-import { refreshToken } from './refreshToken';
-import { logoutUser } from './logoutUser';
 import { authenticate } from '@configs';
+import {
+    createUser,
+    verifyUserEmail,
+    loginUser,
+    updateUserPassword,
+    updateUserInfos,
+    deleteUserAccount,
+    refreshToken,
+    logoutUser,
+} from './controllers';
 
 const router = Router();
 
-/* POST create user. */
 /**
  * @swagger
  * /users/create-new-user:
@@ -54,28 +54,6 @@ const router = Router();
  *                   type: string
  */
 router.post(PathsEnum.CREATE_NEW_USER, createUser);
-
-/* PUT verify user email */
-/**
- * @swagger
- * components:
- *   schemas:
- *     VerifyEmailRequest:
- *       type: object
- *       properties:
- *         token:
- *           type: string
- *         otp:
- *           type: string
- *       required:
- *         - token
- *         - otp
- *     VerifyEmailResponse:
- *       type: object
- *       properties:
- *         message:
- *           type: string
- */
 
 /**
  * @swagger
@@ -118,44 +96,6 @@ router.post(PathsEnum.CREATE_NEW_USER, createUser);
  */
 router.put(PathsEnum.USER_VERIFY_EMAIL, verifyUserEmail);
 
-/* POST login user */
-/**
- * @swagger
- * components:
- *   schemas:
- *     LoginRequest:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *         password:
- *           type: string
- *       required:
- *         - email
- *         - password
- *     LoginResponse:
- *       type: object
- *       properties:
- *         token:
- *           type: string
- *         firstname:
- *           type: string
- *         lastname:
- *           type: string
- *         email:
- *           type: string
- *         phoneVerify:
- *           type: boolean
- *         emailVerify:
- *           type: boolean
- *         lastLoginAt:
- *           type: string
- *           format: date-time
- *         createAt:
- *           type: string
- *           format: date-time
- */
-
 /**
  * @swagger
  * /users/login-user:
@@ -197,7 +137,6 @@ router.put(PathsEnum.USER_VERIFY_EMAIL, verifyUserEmail);
  */
 router.post(PathsEnum.LOGIN_USER, loginUser);
 
-/* POST refresh token */
 /**
  * @swagger
  * /users/refresh-token:
@@ -236,9 +175,8 @@ router.post(PathsEnum.LOGIN_USER, loginUser);
  *       '500':
  *         description: Internal server error
  */
-router.post('/refresh-token', refreshToken);
+router.post(PathsEnum.REFRESH_TOKEN, refreshToken);
 
-/* POST logout user */
 /**
  * @swagger
  * /users/logout:
@@ -266,29 +204,7 @@ router.post('/refresh-token', refreshToken);
  *       '500':
  *         description: Internal server error
  */
-router.post('/logout', authenticate, logoutUser);
-
-/* PUT updated user password */
-/**
- * @swagger
- * components:
- *   schemas:
- *     UpdatePasswordRequest:
- *       type: object
- *       properties:
- *         token:
- *           type: string
- *         newPassword:
- *           type: string
- *       required:
- *         - token
- *         - newPassword
- *     UpdatePasswordResponse:
- *       type: object
- *       properties:
- *         message:
- *           type: string
- */
+router.post(PathsEnum.LOGOUT_USER, authenticate, logoutUser);
 
 /**
  * @swagger
@@ -331,36 +247,6 @@ router.post('/logout', authenticate, logoutUser);
  */
 router.put(PathsEnum.USER_UPDATED_PASSWORD, authenticate, updateUserPassword);
 
-/* PUT updated user infos */
-/**
- * @swagger
- * components:
- *   schemas:
- *     UpdateUserInfosRequest:
- *       type: object
- *       properties:
- *         token:
- *           type: string
- *         firstname:
- *           type: string
- *         lastname:
- *           type: string
- *         city:
- *           type: string
- *         country:
- *           type: string
- *         birthDate:
- *           type: string
- *           format: date
- *       required:
- *         - token
- *     UpdateUserInfosResponse:
- *       type: object
- *       properties:
- *         message:
- *           type: string
- */
-
 /**
  * @swagger
  * /users/user-updated-infos:
@@ -401,25 +287,6 @@ router.put(PathsEnum.USER_UPDATED_PASSWORD, authenticate, updateUserPassword);
  *                   type: string
  */
 router.put(PathsEnum.USER_UPDATED_INFOS, authenticate, updateUserInfos);
-
-/* DELETE user */
-/**
- * @swagger
- * components:
- *   schemas:
- *     DeleteUserAccountRequest:
- *       type: object
- *       properties:
- *         token:
- *           type: string
- *       required:
- *         - token
- *     DeleteUserAccountResponse:
- *       type: object
- *       properties:
- *         message:
- *           type: string
- */
 
 /**
  * @swagger

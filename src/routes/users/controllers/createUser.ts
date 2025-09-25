@@ -16,7 +16,7 @@ import {
   GenderEnum,
   returnErrorWithStatus, returnSuccess
 } from '@utils';
-import { createUserOTP } from './utils';
+import { createUserOTP } from '../utils';
 
 const { hashPassword } = encodedString();
 
