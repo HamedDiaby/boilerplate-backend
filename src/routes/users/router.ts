@@ -1,4 +1,4 @@
-import { PathsEnum } from '@utils';
+import { PathsEnum, authenticate } from '@utils';
 import { Router } from 'express';
 
 import { createUser } from './createUser';
@@ -7,6 +7,8 @@ import { loginUser } from './loginUser';
 import { updateUserPassword } from './updateUserPassword';
 import { updateUserInfos } from './updateUserInfos';
 import { deleteUserAccount } from './deleteUserAccount';
+import { refreshToken } from './refreshToken';
+import { logoutUser } from './logoutUser';
 
 const router = Router();
 
@@ -194,6 +196,77 @@ router.put(PathsEnum.USER_VERIFY_EMAIL, verifyUserEmail);
  */
 router.post(PathsEnum.LOGIN_USER, loginUser);
 
+/* POST refresh token */
+/**
+ * @swagger
+ * /users/refresh-token:
+ *   post:
+ *     summary: Refresh access token
+ *     tags: [User]
+ *     description: This endpoint allows refreshing an expired access token using a refresh token.
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         description: Token refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     accessToken:
+ *                       type: string
+ *                     refreshToken:
+ *                       type: string
+ *                     expiresIn:
+ *                       type: number
+ *       '401':
+ *         description: Invalid or expired refresh token
+ *       '500':
+ *         description: Internal server error
+ */
+router.post('/refresh-token', refreshToken);
+
+/* POST logout user */
+/**
+ * @swagger
+ * /users/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [User]
+ *     description: This endpoint allows a user to logout and invalidate their session.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Logout successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *       '401':
+ *         description: Authentication required
+ *       '500':
+ *         description: Internal server error
+ */
+router.post('/logout', authenticate, logoutUser);
+
 /* PUT updated user password */
 /**
  * @swagger
@@ -255,7 +328,7 @@ router.post(PathsEnum.LOGIN_USER, loginUser);
  *                 message:
  *                   type: string
  */
-router.put(PathsEnum.USER_UPDATED_PASSWORD, updateUserPassword);
+router.put(PathsEnum.USER_UPDATED_PASSWORD, authenticate, updateUserPassword);
 
 /* PUT updated user infos */
 /**
@@ -326,7 +399,7 @@ router.put(PathsEnum.USER_UPDATED_PASSWORD, updateUserPassword);
  *                 message:
  *                   type: string
  */
-router.put(PathsEnum.USER_UPDATED_INFOS, updateUserInfos);
+router.put(PathsEnum.USER_UPDATED_INFOS, authenticate, updateUserInfos);
 
 /* DELETE user */
 /**
@@ -386,7 +459,7 @@ router.put(PathsEnum.USER_UPDATED_INFOS, updateUserInfos);
  *                 message:
  *                   type: string
  */
-router.delete(PathsEnum.USER_DELETED_ACCOUNT, deleteUserAccount);
+router.delete(PathsEnum.USER_DELETED_ACCOUNT, authenticate, deleteUserAccount);
 
 /**
  * @swagger

@@ -1,4 +1,5 @@
 import { DB } from '@configs';
+import passport from 'passport';
 
 import {
     Request, 
@@ -9,12 +10,12 @@ import {
 import { 
     CollectionEnum,
     User, 
-    encodedString, 
     returnError,
+    JWTService,
+    LoginSchema
 } from '@utils';
+import { returnErrorWithStatus, returnSuccess } from '../../utils/utilities/responseHelper';
 import { getUser } from './utils';
-
-const { hashPassword } = encodedString();
 
 export const loginUser = async(
     req: Request, 
@@ -22,42 +23,99 @@ export const loginUser = async(
     next: NextFunction,
 )=> {
     try {
-      const { email, password } : { email: string, password: string } = req.body;
-  
-      if(!(email && password)){
-        return returnError(res, 'Paramètres incorrects !');
-      }
-  
-      const snapshot = await DB.collection(CollectionEnum.USERS)
-                        .where('email', '==', email).get();
-  
-      if(snapshot.empty){
-        return returnError(res, "Pas d'utilisateur");
-      }
-  
-      let token:string = '';
-      
-      snapshot.forEach(doc=> {
-        const userTmp = doc.data() as User;
-        const passwordVerify = hashPassword(password, userTmp.salt!);
-  
-        if(passwordVerify === userTmp.password){
-          token = userTmp.token!;
+        // Validation des données avec Zod
+        const validationResult = LoginSchema.safeParse(req.body);
+        if (!validationResult.success) {
+            return returnErrorWithStatus(res, 'Données invalides: ' + validationResult.error.issues.map(i => i.message).join(', '), 400);
         }
-      });
-      
-      if(!token){
-        return returnError(res, "Pas d'utilisateur");
-      }
-  
-      const user = await getUser(token);
-  
-      if(user.code === 500){
-        return returnError(res, user.data);
-      }
-  
-      res.status(200).json(user.data);
+
+        // Utiliser Passport pour l'authentification
+        passport.authenticate('local', async (err: any, user: User & { _id: string }, info: any) => {
+            if (err) {
+                return returnError(res, err);
+            }
+
+            if (!user) {
+                return returnErrorWithStatus(res, info?.message || 'Email ou mot de passe incorrect', 401);
+            }
+
+            // Connecter l'utilisateur (créer une session)
+            req.logIn(user, async (loginErr) => {
+                if (loginErr) {
+                    return returnError(res, loginErr);
+                }
+
+                try {
+                    // Générer un nouveau sessionId
+                    const sessionId = JWTService.generateSessionId();
+                    
+                    // Générer les tokens JWT
+                    const tokens = JWTService.generateTokenPair(user._id, user.email, sessionId);
+                    
+                    // Créer les données de session
+                    const sessionData = JWTService.createSessionData(user._id, user.email, sessionId);
+                    
+                    // Sauvegarder la session dans Firebase
+                    await DB
+                        .collection(CollectionEnum.USERS)
+                        .doc(user._id)
+                        .collection('sessions')
+                        .doc(sessionId)
+                        .set(sessionData);
+
+                    // Mettre à jour la dernière connexion
+                    await DB
+                        .collection(CollectionEnum.USERS)
+                        .doc(user._id)
+                        .update({
+                            lastLoginAt: new Date()
+                        });
+
+                    // Définir les cookies sécurisés
+                    res.cookie('accessToken', tokens.accessToken, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        maxAge: 15 * 60 * 1000, // 15 minutes
+                        sameSite: 'lax'
+                    });
+
+                    res.cookie('refreshToken', tokens.refreshToken, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === 'production',
+                        maxAge: 365 * 24 * 60 * 60 * 1000, // 1 an
+                        sameSite: 'lax'
+                    });
+
+                    // Réponse de succès
+                    const userResponse = {
+                        _id: user._id,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        email: user.email,
+                        phone: user.phone,
+                        city: user.city,
+                        country: user.country,
+                        emailVerify: user.emailVerify,
+                        phoneVerify: user.phoneVerify,
+                        sessionId
+                    };
+
+                    return returnSuccess(res, {
+                        user: userResponse,
+                        tokens: {
+                            accessToken: tokens.accessToken,
+                            refreshToken: tokens.refreshToken,
+                            expiresIn: tokens.expiresIn
+                        }
+                    });
+
+                } catch (sessionError) {
+                    return returnError(res, sessionError);
+                }
+            });
+        })(req, res, next);
+
     } catch (error) {
-      return returnError(res, error);
+        return returnError(res, error);
     }
 };

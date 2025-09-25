@@ -5,11 +5,13 @@ import fileUpload from 'express-fileupload';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import session from 'express-session';
 
 import cors from 'cors';
 
 import swaggerUI from 'swagger-ui-express';
-import { swaggerDocs } from '@configs';
+import { swaggerDocs, sessionConfig } from '@configs';
+import passport from './configs/passportConfig';
 
 import testRouter from './routes/test.route';
 import usersRouter from './routes/users/router';
@@ -38,6 +40,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Configuration des sessions
+app.use(session(sessionConfig));
+
+// Initialisation de Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', testRouter);
 app.use(PathsEnum.USER_BASE_ROUTE, usersRouter);
