@@ -12,6 +12,7 @@ import swaggerUI from 'swagger-ui-express';
 import { swaggerDocs } from '@configs';
 
 import usersRouter from './routes/users/router';
+import { PathsEnum } from '@utils';
 
 const app = express();
 
@@ -37,7 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/users', usersRouter);
+app.use(PathsEnum.USER_BASE_ROUTE, usersRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 export default app;

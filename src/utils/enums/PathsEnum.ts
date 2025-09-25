@@ -1,4 +1,5 @@
 export enum PathsEnum {
+    USER_BASE_ROUTE = '/users',
     CREATE_NEW_USER = '/create-new-user',
     LOGIN_USER = '/login-user',
     USER_UPDATED_PASSWORD = '/user-updated-password',
