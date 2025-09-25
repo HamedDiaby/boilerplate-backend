@@ -25,7 +25,7 @@ export const sessionConfig: session.SessionOptions = {
         maxAge: 365 * 24 * 60 * 60 * 1000, // 1 an
         sameSite: 'lax'
     },
-    name: 'talendy.session'
+    name: 'backend.session'
 };
 
 // Exporter le service de nettoyage pour usage externe

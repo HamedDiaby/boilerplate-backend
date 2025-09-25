@@ -39,14 +39,14 @@ export class JWTService {
 
         const accessToken = jwt.sign(accessPayload, JWT_ACCESS_SECRET, {
             expiresIn: ACCESS_TOKEN_EXPIRY,
-            issuer: 'talendy-backend',
-            audience: 'talendy-client'
+            issuer: 'app-backend',
+            audience: 'app-client'
         });
 
         const refreshToken = jwt.sign(refreshPayload, JWT_REFRESH_SECRET, {
             expiresIn: REFRESH_TOKEN_EXPIRY,
-            issuer: 'talendy-backend',
-            audience: 'talendy-client'
+            issuer: 'app-backend',
+            audience: 'app-client'
         });
 
         return {
@@ -63,8 +63,8 @@ export class JWTService {
     static verifyAccessToken(token: string): JWTPayload | null {
         try {
             const decoded = jwt.verify(token, JWT_ACCESS_SECRET, {
-                issuer: 'talendy-backend',
-                audience: 'talendy-client'
+                issuer: 'app-backend',
+                audience: 'app-client'
             }) as JWTPayload;
 
             if (decoded.type !== 'access') {
@@ -83,8 +83,8 @@ export class JWTService {
     static verifyRefreshToken(token: string): JWTPayload | null {
         try {
             const decoded = jwt.verify(token, JWT_REFRESH_SECRET, {
-                issuer: 'talendy-backend',
-                audience: 'talendy-client'
+                issuer: 'app-backend',
+                audience: 'app-client'
             }) as JWTPayload;
 
             if (decoded.type !== 'refresh') {

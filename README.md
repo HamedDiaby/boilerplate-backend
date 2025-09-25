@@ -1,4 +1,4 @@
-# 🚀 Talendy Backend API
+# 🚀 Backend API
 
 Une API backend robuste construite avec Node.js, Express, TypeScript, et Firebase, intégrant un système d'authentification avancé avec JWT, sessions, et validation Zod.
 
@@ -80,7 +80,7 @@ src/
 ```bash
 # Cloner le repository
 git clone <repository-url>
-cd talendy-backend
+cd backend
 
 # Installer les dépendances
 npm install

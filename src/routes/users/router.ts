@@ -16,188 +16,6 @@ const router = Router();
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     CreateUserRequest:
- *       type: object
- *       required:
- *         - firstname
- *         - lastname
- *         - email
- *         - password
- *       properties:
- *         firstname:
- *           type: string
- *           minLength: 1
- *           maxLength: 50
- *           description: Prénom de l'utilisateur
- *           example: "Jean"
- *         lastname:
- *           type: string
- *           minLength: 1
- *           maxLength: 50
- *           description: Nom de l'utilisateur
- *           example: "Dupont"
- *         email:
- *           type: string
- *           format: email
- *           description: Email de l'utilisateur
- *           example: "jean.dupont@example.com"
- *         password:
- *           type: string
- *           minLength: 6
- *           maxLength: 100
- *           description: Mot de passe (6-100 caractères)
- *           example: "motdepasse123"
- *         phone:
- *           type: string
- *           description: Numéro de téléphone (optionnel)
- *           example: "+33123456789"
- *         city:
- *           type: string
- *           description: Ville (optionnel)
- *           example: "Paris"
- *         country:
- *           type: string
- *           description: Pays (optionnel)
- *           example: "France"
- *         birthDate:
- *           type: string
- *           format: date
- *           description: Date de naissance (optionnel)
- *           example: "1990-01-15"
- *         gender:
- *           type: string
- *           enum: ['Homme', 'Femme']
- *           description: Genre (optionnel)
- *           example: "Homme"
- * 
- *     LoginRequest:
- *       type: object
- *       required:
- *         - email
- *         - password
- *       properties:
- *         email:
- *           type: string
- *           format: email
- *           description: Email de l'utilisateur
- *           example: "jean.dupont@example.com"
- *         password:
- *           type: string
- *           minLength: 6
- *           description: Mot de passe
- *           example: "motdepasse123"
- * 
- *     VerifyEmailRequest:
- *       type: object
- *       required:
- *         - token
- *         - otp
- *       properties:
- *         token:
- *           type: string
- *           description: Token de l'utilisateur
- *           example: "uuid-token-string"
- *         otp:
- *           type: string
- *           minLength: 1
- *           maxLength: 10
- *           description: Code OTP reçu par email
- *           example: "123456"
- * 
- *     UpdatePasswordRequest:
- *       type: object
- *       required:
- *         - token
- *         - newPassword
- *       properties:
- *         token:
- *           type: string
- *           description: Token de l'utilisateur
- *           example: "uuid-token-string"
- *         newPassword:
- *           type: string
- *           minLength: 6
- *           maxLength: 100
- *           description: Nouveau mot de passe
- *           example: "nouveaumotdepasse123"
- * 
- *     UpdateUserInfosRequest:
- *       type: object
- *       required:
- *         - token
- *       properties:
- *         token:
- *           type: string
- *           description: Token de l'utilisateur
- *           example: "uuid-token-string"
- *         firstname:
- *           type: string
- *           minLength: 1
- *           maxLength: 50
- *           description: Nouveau prénom (optionnel)
- *           example: "Jean"
- *         lastname:
- *           type: string
- *           minLength: 1
- *           maxLength: 50
- *           description: Nouveau nom (optionnel)
- *           example: "Martin"
- *         city:
- *           type: string
- *           maxLength: 100
- *           description: Nouvelle ville (optionnel)
- *           example: "Lyon"
- *         country:
- *           type: string
- *           maxLength: 100
- *           description: Nouveau pays (optionnel)
- *           example: "France"
- *         birthDate:
- *           type: string
- *           format: date
- *           description: Nouvelle date de naissance (optionnel)
- *           example: "1990-01-15"
- * 
- *     RefreshTokenRequest:
- *       type: object
- *       properties:
- *         refreshToken:
- *           type: string
- *           description: Token de rafraîchissement (optionnel si présent dans les cookies)
- *           example: "jwt-refresh-token-string"
- * 
- *     DeleteAccountRequest:
- *       type: object
- *       required:
- *         - token
- *       properties:
- *         token:
- *           type: string
- *           description: Token de l'utilisateur
- *           example: "uuid-token-string"
- * 
- *     AuthResponse:
- *       type: object
- *       properties:
- *         success:
- *           type: boolean
- *           example: true
- *         data:
- *           type: object
- *           properties:
- *             user:
- *               $ref: '#/components/schemas/User'
- *             tokens:
- *               $ref: '#/components/schemas/TokenPair'
- *         statusCode:
- *           type: integer
- *           example: 200
- */
-
-/**
- * @swagger
  * /users/create-new-user:
  *   post:
  *     summary: Créer un nouveau compte utilisateur
@@ -751,6 +569,182 @@ router.delete(PathsEnum.USER_DELETED_ACCOUNT, authenticate, deleteUserAccount);
  *           type: string
  *         message:
  *           type: string
+ *     CreateUserRequest:
+ *       type: object
+ *       required:
+ *         - firstname
+ *         - lastname
+ *         - email
+ *         - password
+ *       properties:
+ *         firstname:
+ *           type: string
+ *           minLength: 1
+ *           maxLength: 50
+ *           description: Prénom de l'utilisateur
+ *           example: "Jean"
+ *         lastname:
+ *           type: string
+ *           minLength: 1
+ *           maxLength: 50
+ *           description: Nom de l'utilisateur
+ *           example: "Dupont"
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email de l'utilisateur
+ *           example: "jean.dupont@example.com"
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *           maxLength: 100
+ *           description: Mot de passe (6-100 caractères)
+ *           example: "motdepasse123"
+ *         phone:
+ *           type: string
+ *           description: Numéro de téléphone (optionnel)
+ *           example: "+33123456789"
+ *         city:
+ *           type: string
+ *           description: Ville (optionnel)
+ *           example: "Paris"
+ *         country:
+ *           type: string
+ *           description: Pays (optionnel)
+ *           example: "France"
+ *         birthDate:
+ *           type: string
+ *           format: date
+ *           description: Date de naissance (optionnel)
+ *           example: "1990-01-15"
+ *         gender:
+ *           type: string
+ *           enum: ['Homme', 'Femme']
+ *           description: Genre (optionnel)
+ *           example: "Homme"
+ * 
+ *     LoginRequest:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email de l'utilisateur
+ *           example: "jean.dupont@example.com"
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *           description: Mot de passe
+ *           example: "motdepasse123"
+ * 
+ *     VerifyEmailRequest:
+ *       type: object
+ *       required:
+ *         - token
+ *         - otp
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: Token de l'utilisateur
+ *           example: "uuid-token-string"
+ *         otp:
+ *           type: string
+ *           minLength: 1
+ *           maxLength: 10
+ *           description: Code OTP reçu par email
+ *           example: "123456"
+ * 
+ *     UpdatePasswordRequest:
+ *       type: object
+ *       required:
+ *         - token
+ *         - newPassword
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: Token de l'utilisateur
+ *           example: "uuid-token-string"
+ *         newPassword:
+ *           type: string
+ *           minLength: 6
+ *           maxLength: 100
+ *           description: Nouveau mot de passe
+ *           example: "nouveaumotdepasse123"
+ * 
+ *     UpdateUserInfosRequest:
+ *       type: object
+ *       required:
+ *         - token
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: Token de l'utilisateur
+ *           example: "uuid-token-string"
+ *         firstname:
+ *           type: string
+ *           minLength: 1
+ *           maxLength: 50
+ *           description: Nouveau prénom (optionnel)
+ *           example: "Jean"
+ *         lastname:
+ *           type: string
+ *           minLength: 1
+ *           maxLength: 50
+ *           description: Nouveau nom (optionnel)
+ *           example: "Martin"
+ *         city:
+ *           type: string
+ *           maxLength: 100
+ *           description: Nouvelle ville (optionnel)
+ *           example: "Lyon"
+ *         country:
+ *           type: string
+ *           maxLength: 100
+ *           description: Nouveau pays (optionnel)
+ *           example: "France"
+ *         birthDate:
+ *           type: string
+ *           format: date
+ *           description: Nouvelle date de naissance (optionnel)
+ *           example: "1990-01-15"
+ * 
+ *     RefreshTokenRequest:
+ *       type: object
+ *       properties:
+ *         refreshToken:
+ *           type: string
+ *           description: Token de rafraîchissement (optionnel si présent dans les cookies)
+ *           example: "jwt-refresh-token-string"
+ * 
+ *     DeleteAccountRequest:
+ *       type: object
+ *       required:
+ *         - token
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: Token de l'utilisateur
+ *           example: "uuid-token-string"
+ * 
+ *     AuthResponse:
+ *       type: object
+ *       properties:
+ *         success:
+ *           type: boolean
+ *           example: true
+ *         data:
+ *           type: object
+ *           properties:
+ *             user:
+ *               $ref: '#/components/schemas/User'
+ *             tokens:
+ *               $ref: '#/components/schemas/TokenPair'
+ *         statusCode:
+ *           type: integer
+ *           example: 200
  */
 
 export default router;
