@@ -11,11 +11,11 @@ import {
 
 import {
     CollectionEnum,
-    RefreshTokenSchema,
     returnErrorWithStatus, 
     returnSuccess,
     SessionData,
 } from '@utils';
+import { RefreshTokenSchema } from '../models';
 
 export const refreshToken = async(
     req: Request,

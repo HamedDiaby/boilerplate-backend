@@ -13,7 +13,7 @@ import {
     returnErrorWithStatus,
     returnSuccess,
 } from '@utils';
-import { getUserID } from './utils';
+import { getUserID } from '../utils';
 
 const { hashPassword } = encodedString();
 

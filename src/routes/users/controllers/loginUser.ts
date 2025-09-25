@@ -12,8 +12,8 @@ import {
     User, 
     returnErrorWithStatus,
     returnSuccess,
-    LoginSchema,
 } from '@utils';
+import { LoginSchema } from '../models';
 
 export const loginUser = async(
     req: Request, 

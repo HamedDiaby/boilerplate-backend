@@ -12,11 +12,11 @@ import {
   User, 
   encodedString, 
   sendConfirmMail,
-  CreateUserSchema,
   GenderEnum,
   returnErrorWithStatus, returnSuccess
 } from '@utils';
 import { createUserOTP } from '../utils';
+import { CreateUserSchema } from '../models';
 
 const { hashPassword } = encodedString();
 

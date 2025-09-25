@@ -11,7 +11,7 @@ import {
     returnErrorWithStatus,
     returnSuccess,
 } from '@utils';
-import { getUserID } from './utils';
+import { getUserID } from '../utils';
 
 export const deleteUserAccount = async(
     req: Request, 
