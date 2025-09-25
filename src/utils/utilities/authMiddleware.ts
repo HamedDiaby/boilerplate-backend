@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { JWTService } from '../functions/jwtService';
-import { DB } from '@configs';
-import { CollectionEnum, returnError } from '@utils';
+import { DB, JWTService } from '@configs';
+import { CollectionEnum } from '@utils';
 import { SessionData, AuthUser } from '../types';
 import { returnErrorWithStatus } from './responseHelper';
 

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
-import { JWTPayload, TokenPair, SessionData } from '../types';
+import { JWTPayload, TokenPair, SessionData } from '@utils';
 
 // Configuration JWT
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'access_secret_key_change_in_production';

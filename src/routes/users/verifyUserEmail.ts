@@ -9,7 +9,7 @@ import {
 import { 
     CollectionEnum,
     OTP,
-    returnError,
+    returnErrorWithStatus,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -22,13 +22,13 @@ export const verifyUserEmail = async(
       const { token, otp } : { token: string, otp: string } = req.body;
   
       if(!(token && otp)){
-        return returnError(res, 'Paramètres incorrects !');
+        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
       }
   
       const userIdReq = await getUserID(token);
   
       if(userIdReq.code === 500){
-        return returnError(res, 'Impossible de verifier votre email !');
+        return returnErrorWithStatus(res, 'Impossible de verifier votre email !', 500);
       }
   
       const userID = userIdReq.data as string;
@@ -37,7 +37,7 @@ export const verifyUserEmail = async(
                         .where('_userID', '==', userID).where('OTP', '==', otp).get();
       
       if(snapshot.empty){
-        return returnError(res, 'Code incorrect !');
+        return returnErrorWithStatus(res, 'Code incorrect !', 400);
       }
   
       let getOtp:OTP | null = null;
@@ -51,6 +51,6 @@ export const verifyUserEmail = async(
   
       res.status(200).json({message: 'Email verifié !'});
     } catch (error) {
-      return returnError(res, error);
+      return returnErrorWithStatus(res, 'Erreur lors de la vérification de l\'email', 500);
     }
 };

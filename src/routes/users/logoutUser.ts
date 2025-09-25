@@ -10,10 +10,8 @@ import {
 
 import {
     CollectionEnum,
-    JWTService,
+    returnErrorWithStatus, returnSuccess,
 } from '@utils';
-
-import { returnErrorWithStatus, returnSuccess } from '../../utils/utilities/responseHelper';
 
 export const logoutUser = async(
     req: Request,

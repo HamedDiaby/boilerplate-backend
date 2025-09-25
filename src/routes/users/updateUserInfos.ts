@@ -8,7 +8,7 @@ import {
 
 import { 
   CollectionEnum, 
-  returnError,
+  returnErrorWithStatus,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -35,13 +35,13 @@ export const updateUserInfos = async(
     } = req.body;
 
     if(!(token)){
-      return returnError(res, 'Paramètres incorrects !');
+      return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
     }
 
     const userIdReq = await getUserID(token);
 
     if(userIdReq.code === 500){
-      return returnError(res, 'Impossible de metre à jours les infos !');
+      return returnErrorWithStatus(res, 'Impossible de metre à jours les infos !', 500);
     }
 
     const userID = userIdReq.data as string;
@@ -64,6 +64,6 @@ export const updateUserInfos = async(
 
     res.status(200).json({message: 'Infos mis à jour !'});
   } catch (error) {
-    return returnError(res, error);
+    return returnErrorWithStatus(res, 'Erreur lors de la mise à jour des infos', 500);
   }
 };

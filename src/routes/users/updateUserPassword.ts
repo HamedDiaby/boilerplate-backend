@@ -10,7 +10,7 @@ import {
 import { 
     CollectionEnum,
     encodedString, 
-    returnError,
+    returnErrorWithStatus,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -25,13 +25,13 @@ export const updateUserPassword = async(
       const { token, newPassword } : { token: string, newPassword: string } = req.body;
   
       if(!(token && newPassword)){
-        return returnError(res, 'Paramètres incorrects !');
+        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
       }
   
       const userIdReq = await getUserID(token);
   
       if(userIdReq.code === 500){
-        return returnError(res, 'Impossible de modifier le mot de passe !');
+        return returnErrorWithStatus(res, 'Impossible de modifier le mot de passe !', 500);
       }
   
       const userID = userIdReq.data as string;
@@ -46,6 +46,6 @@ export const updateUserPassword = async(
   
       res.status(200).json({message: 'Mot de passe mis à jour !'});
     } catch (error) {
-      return returnError(res, error);
+      return returnErrorWithStatus(res, 'Erreur lors de la mise à jour du mot de passe', 500);
     }
 };

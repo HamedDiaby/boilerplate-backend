@@ -12,7 +12,6 @@ import {
   User, 
   encodedString, 
   sendConfirmMail,
-  returnError,
   CreateUserSchema,
   GenderEnum,
 } from '@utils';
@@ -100,6 +99,6 @@ export const createUser = async(
         }
       }, 201);
     } catch (error) {
-      return returnError(res, error);
+      return returnErrorWithStatus(res, 'Internal Server Error', 500);
     }
 };

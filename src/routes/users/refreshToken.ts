@@ -6,16 +6,16 @@ import {
 
 import {
     DB,
+    JWTService,
 } from '@configs';
 
 import {
     CollectionEnum,
-    JWTService,
     RefreshTokenSchema,
+    returnErrorWithStatus, 
+    returnSuccess,
+    SessionData,
 } from '@utils';
-
-import { returnErrorWithStatus, returnSuccess } from '../../utils/utilities/responseHelper';
-import { SessionData } from '../../utils/types';
 
 export const refreshToken = async(
     req: Request,

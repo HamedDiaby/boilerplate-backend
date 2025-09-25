@@ -8,7 +8,7 @@ import {
 
 import { 
     CollectionEnum, 
-    returnError,
+    returnErrorWithStatus,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -21,13 +21,13 @@ export const deleteUserAccount = async(
       const { token } : { token : string } = req.body;
   
       if(!(token)){
-        return returnError(res, 'Paramètres incorrects !');
+        return returnErrorWithStatus(res, 'Paramètres incorrects !', 400);
       }
   
       const userIdReq = await getUserID(token);
   
       if(userIdReq.code === 500){
-        return returnError(res, "Impossible de supprimer votre compte pour l'instant !");
+        return returnErrorWithStatus(res, "Impossible de supprimer votre compte pour l'instant !", 500);
       }
   
       const userID = userIdReq.data as string;
@@ -37,6 +37,6 @@ export const deleteUserAccount = async(
       res.status(200).json({message: 'Compte supprimer avec succes !'});
   
     } catch (error) {
-      return returnError(res, error);
+      return returnErrorWithStatus(res, 'Internal Server Error', 500);
     }
 };

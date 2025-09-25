@@ -1,4 +1,4 @@
-import { DB } from '@configs';
+import { DB, JWTService } from '@configs';
 import passport from 'passport';
 
 import {
@@ -10,11 +10,10 @@ import {
 import { 
     CollectionEnum,
     User, 
-    returnError,
-    JWTService,
-    LoginSchema
+    returnErrorWithStatus,
+    returnSuccess,
+    LoginSchema,
 } from '@utils';
-import { returnErrorWithStatus, returnSuccess } from '../../utils/utilities/responseHelper';
 import { getUser } from './utils';
 
 export const loginUser = async(
@@ -32,7 +31,7 @@ export const loginUser = async(
         // Utiliser Passport pour l'authentification
         passport.authenticate('local', async (err: any, user: User & { _id: string }, info: any) => {
             if (err) {
-                return returnError(res, err);
+                return returnErrorWithStatus(res, err, 500);
             }
 
             if (!user) {
@@ -42,7 +41,7 @@ export const loginUser = async(
             // Connecter l'utilisateur (créer une session)
             req.logIn(user, async (loginErr) => {
                 if (loginErr) {
-                    return returnError(res, loginErr);
+                    return returnErrorWithStatus(res, loginErr, 500);
                 }
 
                 try {
@@ -110,12 +109,12 @@ export const loginUser = async(
                     });
 
                 } catch (sessionError) {
-                    return returnError(res, sessionError);
+                    return returnErrorWithStatus(res, 'Erreur lors de la création de la session', 500);
                 }
             });
         })(req, res, next);
 
     } catch (error) {
-        return returnError(res, error);
+        return returnErrorWithStatus(res, 'Internal Server Error', 500);
     }
 };
