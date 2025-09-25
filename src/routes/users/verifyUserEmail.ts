@@ -10,6 +10,7 @@ import {
     CollectionEnum,
     OTP,
     returnErrorWithStatus,
+    returnSuccess,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -49,7 +50,7 @@ export const verifyUserEmail = async(
       
       await DB.collection(CollectionEnum.USERS).doc(userID).update({emailVerify: true});
   
-      res.status(200).json({message: 'Email verifié !'});
+      return returnSuccess(res, {message: 'Email vérifié !'});
     } catch (error) {
       return returnErrorWithStatus(res, 'Erreur lors de la vérification de l\'email', 500);
     }

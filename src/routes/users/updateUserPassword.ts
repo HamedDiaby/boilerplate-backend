@@ -11,6 +11,7 @@ import {
     CollectionEnum,
     encodedString, 
     returnErrorWithStatus,
+    returnSuccess,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -44,7 +45,7 @@ export const updateUserPassword = async(
         password,
       });
   
-      res.status(200).json({message: 'Mot de passe mis à jour !'});
+      return returnSuccess(res, {message: 'Mot de passe mis à jour !'});
     } catch (error) {
       return returnErrorWithStatus(res, 'Erreur lors de la mise à jour du mot de passe', 500);
     }

@@ -9,6 +9,7 @@ import {
 import { 
   CollectionEnum, 
   returnErrorWithStatus,
+  returnSuccess,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -62,7 +63,7 @@ export const updateUserInfos = async(
       await DB.collection(CollectionEnum.USERS).doc(userID).update({birthDate});
     }
 
-    res.status(200).json({message: 'Infos mis à jour !'});
+    return returnSuccess(res, {message: 'Infos mis à jour !'});
   } catch (error) {
     return returnErrorWithStatus(res, 'Erreur lors de la mise à jour des infos', 500);
   }

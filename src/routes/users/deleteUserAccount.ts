@@ -9,6 +9,7 @@ import {
 import { 
     CollectionEnum, 
     returnErrorWithStatus,
+    returnSuccess,
 } from '@utils';
 import { getUserID } from './utils';
 
@@ -34,7 +35,7 @@ export const deleteUserAccount = async(
   
       await DB.collection(CollectionEnum.USERS).doc(userID).delete();
   
-      res.status(200).json({message: 'Compte supprimer avec succes !'});
+      return returnSuccess(res, {message: 'Compte supprimé avec succès !'});
   
     } catch (error) {
       return returnErrorWithStatus(res, 'Internal Server Error', 500);

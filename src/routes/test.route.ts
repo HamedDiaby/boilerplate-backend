@@ -1,10 +1,10 @@
-import { PathsEnum } from '@utils';
+import { PathsEnum, returnSuccess } from '@utils';
 import { Router } from 'express';
 
 const router = Router();
 
 router.get(PathsEnum.TEST, (req, res, next) => {
-  res.status(200).json({ message: 'API is working!' });
+  returnSuccess(res, { message: 'API is working!' }, 200);
 });
 
 export default router;

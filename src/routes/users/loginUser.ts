@@ -14,7 +14,6 @@ import {
     returnSuccess,
     LoginSchema,
 } from '@utils';
-import { getUser } from './utils';
 
 export const loginUser = async(
     req: Request, 

@@ -14,8 +14,8 @@ import {
   sendConfirmMail,
   CreateUserSchema,
   GenderEnum,
+  returnErrorWithStatus, returnSuccess
 } from '@utils';
-import { returnErrorWithStatus, returnSuccess } from '../../utils/utilities/responseHelper';
 import { createUserOTP } from './utils';
 
 const { hashPassword } = encodedString();
