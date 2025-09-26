@@ -13,7 +13,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
-import { VerifyEmailSchema } from '../models/validation.schemas';
+import { VerifyEmailSchema } from '../models';
 
 export const verifyUserEmail = async(
     req: Request, 

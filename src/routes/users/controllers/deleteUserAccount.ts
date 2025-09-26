@@ -12,7 +12,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
-import { DeleteUserAccountSchema } from '../models/validation.schemas';
+import { DeleteUserAccountSchema } from '../models';
 
 export const deleteUserAccount = async(
     req: Request, 

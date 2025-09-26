@@ -332,45 +332,6 @@ router.post(PathsEnum.LOGOUT_USER, authenticate, logoutUser);
  * @swagger
  * /users/user-updated-password:
  *   put:
- *     summary: Update user password
- *     tags: [User]
- *     description: This endpoint allows a user to update their password.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/UpdatePasswordRequest'
- *     responses:
- *       '200':
- *         description: Password updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/UpdatePasswordResponse'
- *       '400':
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *       '500':
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- */
-/**
- * @swagger
- * /users/user-updated-password:
- *   put:
  *     summary: Mettre à jour le mot de passe
  *     tags: [User Management]
  *     description: |

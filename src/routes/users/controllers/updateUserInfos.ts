@@ -12,7 +12,7 @@ import {
   returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
-import { UpdateUserInfosSchema } from '../models/validation.schemas';
+import { UpdateUserInfosSchema } from '../models';
 
 export const updateUserInfos = async(
   req: Request, 

@@ -14,7 +14,7 @@ import {
     returnSuccess,
 } from '@utils';
 import { getUserID } from '../utils';
-import { UpdatePasswordSchema } from '../models/validation.schemas';
+import { UpdatePasswordSchema } from '../models';
 
 const { hashPassword } = encodedString();
 
